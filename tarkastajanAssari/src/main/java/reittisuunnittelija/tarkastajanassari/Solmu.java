@@ -20,6 +20,14 @@ public class Solmu {//implements Comparable{
     private double dist;
     private HashMap<Solmu, Double> naapurit;  //vieruslista johon merkitään naapurisolmut
     
+    public Solmu(int nro, double y, double x) {
+        this.nimi = this.toString();
+        this.nro = nro;
+        this.y=y;
+        this.x=x;
+        this.naapurit = new HashMap();
+    }
+    
     public Solmu(String nimi, int nro, double lev, double pit) {
         this.nimi = nimi;
         this.nro = nro;
@@ -50,6 +58,16 @@ public class Solmu {//implements Comparable{
             return true;
         } else {
             return false;
+        }
+    }
+    
+    public boolean lisaaNaapuri(Solmu naapuri) {
+        if (naapuri==null)
+            return false;
+        else {
+        double etaisyys = Math.abs(this.x-naapuri.x)+Math.abs(this.y-naapuri.y);
+        naapurit.put(naapuri, etaisyys);
+        return true;
         }
     }
 

@@ -70,10 +70,35 @@ public class Reitti {
         }
 
     }
+    
+    /**
+     * Metodi toteuttaa A* heuristiikkafunktion laskemalla etäisyyden solmusta maaliin nk. Manhattan
+     * -etäisyytenä, eli matkana x- ja y-koordinaattien etäisyyksien summana.
+     * @param s
+     * @param maali
+     * @return 
+     */
+    public static double arvioiMatka(Solmu s,Solmu maali) {
+        if(s==null||maali==null) {
+            return 0;
+        }
+        else {
+            return Math.abs(s.getX()-maali.getX())+Math.abs(s.getY()-maali.getY());
+        }
+    }
+    
+    public static boolean laskeJaAseta(Solmu s, Solmu maali) {
+         if(s==null||maali==null) {
+            return false;
+         }
+         else {
+             return true;
+         }
+    }
 
     public static long lyhinReitti(int n, int[] mista, int[] minne, int[] hinta) {
 
-        boolean[] kayty;
+        int[] kayty;
         HashMap<Integer, HashMap<Integer, Integer>> vl;
         PriorityQueue<Node> keko = new PriorityQueue();
         long matka = 0l;
@@ -82,8 +107,7 @@ public class Reitti {
         for (int i = 1; i < n + 1; i++) {
             vl.put(i, new HashMap<Integer, Integer>());    //alustetaan vieruslista 0-kaupungeilla
         }
-        kayty = new boolean[n + 1];
-        Arrays.fill(kayty, false);
+        kayty = new int[n + 1];
 
         //rakennetaan vieruslista ja laitetaan samalla kaikki solmut kekoon
         HashMap<Integer, Integer> apuMap = new HashMap<Integer, Integer>();
@@ -104,9 +128,9 @@ public class Reitti {
             System.out.println("Keko ei ole tyhjä, pollataan pienin\n" + keko.toString());
             s = keko.poll();
             apuMap = vl.get(s.getNro());
-            System.out.println("POllattiin " + s);
-            if (!kayty[s.getNro()]) {//jos ei ole merkitty käydyksi
-                kayty[s.getNro()] = true;//merkitään käydyksi
+            System.out.println("Pollattiin " + s);
+            if (kayty[s.getNro()]==0) {//jos ei ole merkitty käydyksi
+                kayty[s.getNro()] = 1;//merkitään käydyksi
                 matka += s.getMatka();
                 System.out.println("kustannus solmussa " + s + "= " + matka);
                 apuMap = vl.get(s.getNro());    //haetaan vieruslistalta tutkittavan solmun naapurit
